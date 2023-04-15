@@ -18,23 +18,24 @@ public class TestLogin {
     private String name;
     private String email;
     private String password;
-    public TestLogin(){
+
+    public TestLogin() {
     }
+
     @Before
     public void setUp() throws Exception {
         //запуск драйвера
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless", "--ignore-certificate-errors","--disable-extensions","--no-sandbox","--disable-dev-shm-usage", "--remote-allow-origins=*");
+        options.addArguments("--headless", "--ignore-certificate-errors", "--disable-extensions", "--no-sandbox", "--disable-dev-shm-usage", "--remote-allow-origins=*");
         driver = new ChromeDriver(options);
+        //подготовка даннных
         userClient = new UserClient();
-        this.user = new User();
-        user.setName(UserGenerator.getRandomName().getName());
-        user.setEmail(UserGenerator.getRandomEmail().getEmail());
-        user.setPassword(UserGenerator.getRandomValidPassword().getPassword());
+        user = UserGenerator.getRandomData();
         userClient.createNewUser(user);
         email = user.getEmail();
         password = user.getPassword();
     }
+
     @DisplayName("Проверка входа по кнопке «Войти в аккаунт» на главной странице")
     @Test
     public void TestLoginFromMainPage() {
@@ -48,6 +49,7 @@ public class TestLogin {
         String orderButton = objMainPage.locateOrderButton().getText();
         Assert.assertEquals("Оформить заказ", orderButton);
     }
+
     @DisplayName("Проверка входа через кнопку «Личный кабинет»")
     @Test
     public void TestLoginFromAdminSection() {
@@ -60,6 +62,7 @@ public class TestLogin {
         String orderButton = objMainPage.locateOrderButton().getText();
         Assert.assertEquals("Оформить заказ", orderButton);
     }
+
     @DisplayName("Проверка входа через кнопку в форме регистрации")
     @Test
     public void TestLoginFromRegistrationPage() {

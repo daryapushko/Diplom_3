@@ -1,5 +1,7 @@
 package ru.yandex.praktikum.model;
 
+import io.qameta.allure.Step;
+
 public class UserLogin {
     private String email;
     private String password;
@@ -8,7 +10,7 @@ public class UserLogin {
         this.email = email;
         this.password = password;
     }
-
+    @Step("Создание логина пользователя на основе данных из регистрации")
     public static UserLogin from(User user) {
         return new UserLogin(user.getEmail(), user.getPassword());
     }

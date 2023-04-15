@@ -18,12 +18,13 @@ public class TestRegistrationValidationMessage {
 
     @Before
     public void setUp() throws Exception {
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless", "--ignore-certificate-errors","--disable-extensions","--no-sandbox","--disable-dev-shm-usage", "--remote-allow-origins=*");
-            driver = new ChromeDriver(options);
-            this.invalidPassword = UserGenerator.getRandomInvalidPassword().getPassword();
-            this.blankPassword = UserGenerator.getRandomBlankPassword().getPassword();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless", "--ignore-certificate-errors", "--disable-extensions", "--no-sandbox", "--disable-dev-shm-usage", "--remote-allow-origins=*");
+        driver = new ChromeDriver(options);
+        this.invalidPassword = UserGenerator.getRandomInvalidPassword().getPassword();
+        this.blankPassword = UserGenerator.getRandomBlankPassword().getPassword();
     }
+
     @DisplayName("Проверка ошибки для некорректного пароля. Минимальный пароль — шесть символов.")
     @Test
     public void TestRegisterPasswordValidationMessage() {
@@ -44,6 +45,6 @@ public class TestRegistrationValidationMessage {
 
     @After
     public void tearDown() {
-            driver.quit();
-        }
+        driver.quit();
     }
+}

@@ -23,7 +23,7 @@ public class TestLogout {
     public void setUp() throws Exception {
         //запуск драйвера
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless", "--ignore-certificate-errors","--disable-extensions","--no-sandbox","--disable-dev-shm-usage", "--remote-allow-origins=*");
+        options.addArguments("--headless", "--ignore-certificate-errors", "--disable-extensions", "--no-sandbox", "--disable-dev-shm-usage", "--remote-allow-origins=*");
         driver = new ChromeDriver(options);
         //подготовка данных
         userClient = new UserClient();
@@ -41,6 +41,7 @@ public class TestLogout {
         objLoginPage.transferToMainPageOnLogin();
 
     }
+
     @DisplayName("Проверка выхода по кнопке «Выйти» в личном кабинете")
     @Test
     public void TestLogout() {
@@ -55,13 +56,13 @@ public class TestLogout {
         objHeader.selectLogo();
         String loginButtonText = objMainPage.locateLoginButton().getText();
         Assert.assertEquals("Войти в аккаунт", loginButtonText);
-        }
+    }
 
     @After
     public void tearDown() throws Exception {
         UserLogin userLogin = new UserLogin(email, password);
         UserResponse response = userClient.login(userLogin).extract().as(UserResponse.class);
         userClient.deleteUser(response.getAccessToken());
-            driver.quit();
-        }
+        driver.quit();
+    }
 }

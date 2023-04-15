@@ -1,5 +1,6 @@
 package ru.yandex.praktikum;
 
+import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Assert;
@@ -10,6 +11,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import ru.yandex.praktikum.client.UserClient;
 import ru.yandex.praktikum.model.*;
+import ru.yandex.praktikum.model.User;
+import ru.yandex.praktikum.model.UserLogin;
 
 public class TestAdminButton {
     private WebDriver driver;
@@ -28,29 +31,26 @@ public class TestAdminButton {
         driver = new ChromeDriver(options);
         //подготовка данных
         userClient = new UserClient();
-        this.user = new User();
-        user.setName(UserGenerator.getRandomName().getName());
-        user.setEmail(UserGenerator.getRandomEmail().getEmail());
-        user.setPassword(UserGenerator.getRandomValidPassword().getPassword());
+        user = UserGenerator.getRandomData();
         userClient.createNewUser(user);
-        email = user.getEmail();
-        password = user.getPassword();
         //логин с новым пользователем
-        LoginPage objLoginPage = new LoginPage(driver);
-        objLoginPage.open();
-        objLoginPage.fillLoginFormWithValidData(email, password);
-        objLoginPage.transferToMainPageOnLogin();
-    }
+        email = user.getEmail();
+        password = user.getPassword();}
+
 
     @DisplayName("Проверка перехода по клику на «Личный кабинет».")
     @Test
     public void testTransferToAdminSection() {
+        LoginPage objLoginPage = new LoginPage(driver);
+        objLoginPage.open();
+        objLoginPage.fillLoginFormWithValidData(email, password);
+        objLoginPage.transferToMainPageOnLogin();
         //переход в личный кабинет с главной страницы
         MainPage objMainPage = new MainPage(driver);
         objMainPage.selectAdminSection();
         //отображение страницы профиля
         ProfilePage objProfilePage = new ProfilePage(driver);
-        System.out.println(objProfilePage.getUriProfilePage());
+        System.out.println(objProfilePage.getProfilePageUrl());
         boolean isProfileDataAvailable = objProfilePage.locatePersonalData().isDisplayed();
         Assert.assertTrue("Страница профиля не показана", isProfileDataAvailable);
     }

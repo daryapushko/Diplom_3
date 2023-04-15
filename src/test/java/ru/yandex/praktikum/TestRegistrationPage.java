@@ -14,22 +14,24 @@ import ru.yandex.praktikum.client.*;
 public class TestRegistrationPage {
     private WebDriver driver;
     private UserClient userClient;
+    private User user;
     private String name;
     private String email;
     private String password;
 
     @Before
     public void setUp() throws Exception {
-            //запуск драйвера
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless", "--ignore-certificate-errors","--disable-extensions","--no-sandbox","--disable-dev-shm-usage", "--remote-allow-origins=*");
-            driver = new ChromeDriver(options);
-            //подготовка данных
-            userClient = new UserClient();
-            this.name = UserGenerator.getRandomName().getName();
-            this.email = UserGenerator.getRandomEmail().getEmail();
-            this.password = UserGenerator.getRandomValidPassword().getPassword();
+        //запуск драйвера
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless", "--ignore-certificate-errors", "--disable-extensions", "--no-sandbox", "--disable-dev-shm-usage", "--remote-allow-origins=*");
+        driver = new ChromeDriver(options);
+        //подготовка данных
+        userClient = new UserClient();
+        this.name = UserGenerator.getRandomName().getName();
+        this.email = UserGenerator.getRandomEmail().getEmail();
+        this.password = UserGenerator.getRandomValidPassword().getPassword();
     }
+
     @DisplayName("Проверка успешной регистрации")
     @Test
     public void TestRegisterWithValidData() {
@@ -37,7 +39,6 @@ public class TestRegistrationPage {
         objRegisterPage.open();
         objRegisterPage.fillRegisterFormWIthValidData(name, email, password);
         String loginUri = objRegisterPage.transferToLoginOnRegistration();
-        //проверка перехода на страницу с логином
         LoginPage objLoginPage = new LoginPage(driver);
         String expectedLoginUri = objLoginPage.getLoginPageUrl();
         Assert.assertEquals("Страница логина не показана", expectedLoginUri, loginUri);
